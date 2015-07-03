@@ -5,6 +5,7 @@ import java.io.StringReader;
   
 
 
+
 import org.apache.lucene.analysis.Analyzer;  
 import org.apache.lucene.analysis.TokenStream;  
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;  
@@ -13,6 +14,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;  
 import org.apache.lucene.index.IndexWriter;  
 import org.apache.lucene.index.IndexWriterConfig;  
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;  
 import org.apache.lucene.queryparser.classic.QueryParser;  
 import org.apache.lucene.search.IndexSearcher;  
@@ -40,11 +42,11 @@ public class Lucene {
 	private final IndexWriter indexWriter;
 	private final IndexReader indexReader;
 	private final IndexSearcher searcher;
-	private final QueryParser parser;
+	private final MultiFieldQueryParser parser;
 	private Query query;
 	private TopDocs topDocs;
 	private final String INDEXNAME = "URL";
-	private final String FIELDNAME = "contents";
+	private final String[] FIELDNAME = new String[] {"title", "content"};
 	private final int TOPURL = 5;
 	
 	
@@ -61,7 +63,7 @@ public class Lucene {
 		//初始化searcher和parser
 		indexReader = IndexReader.open(directory);
 		searcher = new IndexSearcher(indexReader);
-		parser = new QueryParser(Version.LUCENE_40, FIELDNAME, analyzer);  
+		parser = new MultiFieldQueryParser(Version.LUCENE_40, FIELDNAME, analyzer);  
 		parser.setDefaultOperator(QueryParser.OR_OPERATOR); 
 	}
   
@@ -83,7 +85,8 @@ public class Lucene {
              ScoreDoc[] docs = topDocs.scoreDocs;  
              for(ScoreDoc doc : docs){  
                  Document d = searcher.doc(doc.doc);  
-                 System.out.println("内容: "+ d.get(INDEXNAME) + " " + d.get(FIELDNAME));  
+                 System.out.println("内容: "+ d.get(INDEXNAME) + "\t" +
+                		 d.get(FIELDNAME[0]) + "\t" + d.get(FIELDNAME[1]));  
              }  
          } catch (ParseException e) {    
              e.printStackTrace();  
@@ -110,25 +113,6 @@ public class Lucene {
                 e.printStackTrace();  
             }  
         } 
-    }
-    /** 
-     * @param args 
-     * @throws IOException  
-     */  
-    public static void main(String[] args) throws IOException {  
- 
-      
-          
-         
-        //调用IndexSearcher搜索  
-        //TODO //关键词及调用
-        String request = "中文分词工具包";  
-   
-        
-       
-          
-    }  
-    
-    
+    }   
   
 }  
