@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+	<!-- 常量 -->
+	
+	 <!--设置开发模式-->
+    <constant name="struts.devMode" value="true"/>
+    <!--设置编码形式为GB2312-->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+
+
+	<!-- 全局跳转 -->
+	<package name="search" extends="struts-default">
+	    <global-results>
+            <result name="error">/index.jsp</result>
+        </global-results>
+	</package>
+
+</struts>    
