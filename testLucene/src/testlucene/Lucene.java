@@ -1,16 +1,17 @@
 package testlucene;  
   
+import java.io.File;
 import java.io.IOException;  
-import java.io.StringReader;  
   
 
 
 
+
+
+
+
 import org.apache.lucene.analysis.Analyzer;  
-import org.apache.lucene.analysis.TokenStream;  
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;  
 import org.apache.lucene.document.Document;  
-import org.apache.lucene.document.Field;  
 import org.apache.lucene.index.IndexReader;  
 import org.apache.lucene.index.IndexWriter;  
 import org.apache.lucene.index.IndexWriterConfig;  
@@ -21,7 +22,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;  
 import org.apache.lucene.search.ScoreDoc;  
 import org.apache.lucene.search.TopDocs;  
-import org.apache.lucene.store.RAMDirectory;  
+import org.apache.lucene.store.Directory; 
+import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;  
 import org.wltea.analyzer.lucene.IKAnalyzer;  
   
@@ -36,7 +38,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 public class Lucene {  
 	
-	private final RAMDirectory directory;
+	private final Directory directory;
 	private final Analyzer analyzer;
 	private final IndexWriterConfig writerConfig;
 	private final IndexWriter indexWriter;
@@ -45,6 +47,7 @@ public class Lucene {
 	private final MultiFieldQueryParser parser;
 	private Query query;
 	private TopDocs topDocs;
+	private final String indexPath = "f:\\index";
 	private final String INDEXNAME = "URL";
 	private final String[] FIELDNAME = new String[] {"title", "content"};
 	private final int TOPURL = 5;
@@ -52,7 +55,7 @@ public class Lucene {
 	
 	public Lucene() throws IOException {
 		//初始化indexWriter
-		directory = new RAMDirectory();//存储在内存中
+		directory = SimpleFSDirectory.open(new File(indexPath));//存储在内存中
 		analyzer = new IKAnalyzer();
 		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer); 
 		indexWriter = new IndexWriter(directory, writerConfig); 
