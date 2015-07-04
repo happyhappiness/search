@@ -1,5 +1,6 @@
 package search.domain;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,8 +23,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table(name = "KeyWord")
+@Table(name = "keyword")
 public class Keyword implements java.io.Serializable {
+
 
 	// Fields
 
@@ -42,8 +44,11 @@ public class Keyword implements java.io.Serializable {
 	 * keyword”≥…‰url
 	 */
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinTable(name = "key_url", joinColumns = { @JoinColumn(name = "kid", referencedColumnName = "kid") }, inverseJoinColumns = { @JoinColumn(name = "uid", referencedColumnName = "uid") })
+	@JoinTable(name = "key_url", 
+		joinColumns = { @JoinColumn(name = "kid", referencedColumnName = "kid") },
+		inverseJoinColumns = { @JoinColumn(name = "uid", referencedColumnName = "uid") })
 	private Set<Url> urls = new HashSet<Url>(0);
+
 
 	// Constructors
 

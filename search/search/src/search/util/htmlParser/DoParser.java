@@ -28,32 +28,39 @@ public class DoParser {
 
 	
 	//获取html文件的标题
-	public String getTitle(String htmls) throws ParserException {
+	public String getTitle(String htmls) {
 		Parser parser = new Parser();
-		parser.setURL(htmls);
-		parser.setEncoding(ENCODE);
-
-		filter = new TagNameFilter(TITLE);
-		nodeList = parser.parse(filter);
-		for (NodeIterator i = nodeList.elements(); i.hasMoreNodes();) {
-			Node node = i.nextNode();
-			System.out.println("标题： " + node.toPlainTextString());
-			System.out.println("=================================================");
+		String title;
+		
+		filter = new TagNameFilter(TITLE);		
+		try {
+			parser.setURL(htmls);
+			parser.setEncoding(ENCODE);
+			nodeList = parser.parse(filter);
+		} catch (ParserException e) {
+			e.printStackTrace();
 		}
+		
+		title = nodeList.elementAt(0).toPlainTextString();
+		System.out.println("标题： " + title);
+
+		return title;
 	}
 
 	//获取html文件正文
 	public String getContent(String htmls){
 
 		stringExtractor = new StringExtractor (htmls);
-        try
-        {
-            System.out.println (stringExtractor.extractStrings (HASLINKS));
-        }
-        catch (ParserException e)
-        {
-            e.printStackTrace ();
-        }
+		String content = null;
+		try {
+			content = stringExtractor.extractStrings (HASLINKS); 
+			System.out.println ("内容：" + content); 
+			System.out.println ("==================================================="); 
+		} catch (ParserException e) {
+			e.printStackTrace();
+		}
+           
+		return content;
 	}
 
 /*	public static void main(String[] args) {

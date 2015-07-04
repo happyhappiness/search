@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import search.domain.Url;
+
+import org.htmlparser.util.ParserException;
 import org.springframework.stereotype.Service;
 
 import search.service.SpiderService;
@@ -34,6 +36,8 @@ public class SpiderServiceImpl implements SpiderService{
 			url.setPath(currPath);
 			url.setTitle(parserHelper.getTitle(currPath));
 			url.setContent(parserHelper.getContent(currPath));
+			//±£´æurl 
+			urlService.saveOrUpdateUrl(url);
 		}
 				
 	}

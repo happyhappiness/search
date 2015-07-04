@@ -3,29 +3,22 @@ package search.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.*;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
 /**
  * Url entity. @author MyEclipse Persistence Tools
  */
+
 @Component
 @Entity
-@Table(name = "Url")
+@Table(name = "url")
 public class Url implements java.io.Serializable {
 
 	// Fields
 
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "uid")
@@ -55,13 +48,17 @@ public class Url implements java.io.Serializable {
 	@Column(name = "content", length = 2000)
 	private String content;
 
+
 	/*
 	 * url¶ÔÓ¦¹Ø¼ü×Ö
 	 */
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinTable(name = "key_url", joinColumns = { @JoinColumn(name = "uid", referencedColumnName = "uid") }, inverseJoinColumns = { @JoinColumn(name = "kid", referencedColumnName = "kid") })
+	@JoinTable(name = "key_url",
+		joinColumns = { @JoinColumn(name = "uid", referencedColumnName = "uid") }, 
+		inverseJoinColumns = { @JoinColumn(name = "kid", referencedColumnName = "kid") })
 	private Set<Keyword> keywords = new HashSet<Keyword>(0);
 
+	
 	// Constructors
 
 	/** default constructor */
