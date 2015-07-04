@@ -9,43 +9,38 @@ import org.springframework.stereotype.Controller;
 
 import search.domain.Keyword;
 import search.domain.Url;
+import search.service.SearchService;
+import search.service.impl.SearchServiceImpl;
 
 @Controller
 @Namespace("/")
 @Scope("prototype")
 @ParentPackage("struts-default")
 public class SearchAction {
-
-	 @Resource 
-	 private Url url;
-	 private Keyword keyword;
+	 
+	 private String queryString;
+	 
+	 @Resource
+	 private SearchService searchService = new SearchServiceImpl();
 	 
 	 @Action(value = "search", results = {  
 		 @Result(name = "success", location = "/success.jsp")})
-	 public String test() {
-		 if(keyword != null)
-			 System.out.println(keyword.getWord());
-		 else
-			 System.out.println("why no ?");
-			 
+	 public String search() {
+		 if(queryString != null)
+			 System.out.println(queryString);			 
 		 return "success";
+		 
 	 }
 
+
 	//getter and setter
-	public Url getUrl() {
-		return url;
+
+	public String getQueryString() {
+		return queryString;
 	}
 
-	public void setUrl(Url url) {
-		this.url = url;
-	}
-
-	public Keyword getKeyWord() {
-		return keyword;
-	}
-
-	public void setKeyWord(Keyword keyword) {
-		this.keyword = keyword;
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
 	}
 	 
 	 

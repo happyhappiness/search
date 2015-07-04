@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*"%>
 <%@ page contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="/struts-tags" prefix="s" %>
 <%request.setCharacterEncoding("utf-8"); %>
 <%
 String path = request.getContextPath();
@@ -28,9 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<br/>
 	<form method="post" action="search.action"  id="mainForm" method="post">
 	
-	    <s:input type="text" name="keyword.word" style="width: 558px; "/>
+	    <input type="text" name="queryString" style="width: 558px; "/>
 	    
-	    <s:input type="submit" value="搜索" style="width: 169px; "/>
+	    <input type="submit" value="搜索" style="width: 169px; "/>
 	    
 	</form>
 

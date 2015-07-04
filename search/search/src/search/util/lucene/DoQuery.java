@@ -1,4 +1,4 @@
-package testlucene;
+package search.util.lucene;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

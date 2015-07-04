@@ -1,4 +1,4 @@
-package testlucene;
+package lucene;
 
 import java.io.IOException;
 import java.util.ArrayList;
