@@ -11,35 +11,33 @@ import search.dao.UrlDAO;
 import search.domain.Url;
 
 @Repository
-public class UrlDAOImpl implements UrlDAO{
+public class UrlDAOImpl extends BaseDAOImpl<Url> implements UrlDAO{
 
-	@Resource
-	private BaseDAO baseDAO = new BaseDAOImpl();
 	
 	//删除url信息
 	@Override
 	public void deleteUrl(Url url){
-		baseDAO.delete(url);
+		delete(url);
 	}
    
 	//添加或更新url 
 	@Override
 	public void attachDirtyUrl(Url url){
-		baseDAO.attachDirty(url);
+		attachDirty(url);
 	}
 	
 	//获取全体对象信息
     public List<Url> findAllUrls(Class<Url> urlClass){
-    	return baseDAO.findAll(urlClass);
+    	return findAll(urlClass);
     }
     
     public long findUrlsCount(Class<Url> urlClass){
-    	return baseDAO.findCount(urlClass);
+    	return findCount(urlClass);
     }
     
     //根据属性值获取对象   
     public List<Url> findUrlByProperty(String propertyName, Object value) {
-    	return baseDAO.findByProperty(propertyName, value);
+    	return findByProperty(propertyName, value);
     }
 
 }

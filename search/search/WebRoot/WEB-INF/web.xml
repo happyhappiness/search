@@ -8,6 +8,15 @@
   <filter>
     <filter-name>struts2</filter-name>
     <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+ 	<init-param>  
+      <param-name>filterConfig</param-name>  
+      <param-value>classpath:struts.xml</param-value>  
+    </init-param>        
+    <!-- 自动扫描action -->  
+    <init-param>  
+      <param-name>actionPackages</param-name>  
+      <param-value>search.action</param-value>  
+    </init-param>  
   </filter>
   <filter-mapping>
     <filter-name>struts2</filter-name>

@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
  * Url entity. @author MyEclipse Persistence Tools
  */
 @Component
-@Entity  
-@Table(name = "Url") 
+@Entity
+@Table(name = "Url")
 public class Url implements java.io.Serializable {
 
 	// Fields
@@ -30,43 +30,36 @@ public class Url implements java.io.Serializable {
 	@GeneratedValue
 	@Column(name = "uid")
 	private Integer uid;
-	
+
 	/*
 	 * url名称
-	 * 
-	 * */
+	 */
 	@Column(name = "url", length = 50)
 	private String url;
-	
+
 	/*
 	 * url存储路径
-	 * 
-	 * */
+	 */
 	@Column(name = "path", length = 100)
 	private String path;
-	
+
 	/*
 	 * url标题信息
-	 * 
-	 * */
+	 */
 	@Column(name = "title", length = 100)
 	private String title;
-	
+
 	/*
 	 * url正文信息
-	 * 
-	 * */
+	 */
 	@Column(name = "content", length = 2000)
 	private String content;
-	
+
 	/*
 	 * url对应关键字
-	 * 
-	 * */
-	@ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-	@JoinTable(name = "key_url",
-		joinColumns = {@JoinColumn(name ="uid",referencedColumnName="uid")},
-		inverseJoinColumns = {@JoinColumn( name = "kid", referencedColumnName ="kid")})
+	 */
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JoinTable(name = "key_url", joinColumns = { @JoinColumn(name = "uid", referencedColumnName = "uid") }, inverseJoinColumns = { @JoinColumn(name = "kid", referencedColumnName = "kid") })
 	private Set<Keyword> keywords = new HashSet<Keyword>(0);
 
 	// Constructors

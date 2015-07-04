@@ -2,7 +2,7 @@ package search.service;
 
 import java.util.List;
 
-import javassist.compiler.ast.Keyword;
+import search.domain.Keyword;
 
 import org.springframework.stereotype.Service;
 

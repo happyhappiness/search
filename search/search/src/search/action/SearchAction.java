@@ -26,8 +26,11 @@ public class SearchAction {
 	 @Action(value = "search", results = {  
 		 @Result(name = "success", location = "/success.jsp")})
 	 public String search() {
-		 if(queryString != null)
-			 System.out.println(queryString);			 
+		 if(queryString != null){
+			 System.out.println(queryString);
+			 
+			 searchService.searchKeyword(queryString);
+		 }
 		 return "success";
 		 
 	 }

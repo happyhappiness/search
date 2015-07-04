@@ -31,23 +31,20 @@ public class Keyword implements java.io.Serializable {
 	@GeneratedValue
 	@Column(name = "kid")
 	private int kid;
-	
+
 	/*
 	 * keywordƒ⁄»›
-	 * 
-	 * */
+	 */
 	@Column(name = "word", length = 50)
 	private String word;
 
 	/*
 	 * keyword”≥…‰url
-	 * 
-	 * */
-	@ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-	@JoinTable(name = "key_url",
-		joinColumns = {@JoinColumn(name ="kid",referencedColumnName="kid")},
-		inverseJoinColumns = {@JoinColumn( name = "uid", referencedColumnName ="uid")})
+	 */
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JoinTable(name = "key_url", joinColumns = { @JoinColumn(name = "kid", referencedColumnName = "kid") }, inverseJoinColumns = { @JoinColumn(name = "uid", referencedColumnName = "uid") })
 	private Set<Url> urls = new HashSet<Url>(0);
+
 	// Constructors
 
 	/** default constructor */
@@ -78,7 +75,6 @@ public class Keyword implements java.io.Serializable {
 	public void setWord(String word) {
 		this.word = word;
 	}
-	
 
 	public Set<Url> getUrls() {
 		return this.urls;

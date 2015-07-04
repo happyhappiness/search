@@ -84,7 +84,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     //更新数据库，删除所有已删除信息，彻底删除
     public boolean removeALLDeleted() {
         try {
-            String className = getClass().getSimpleName();
+            String className = getEntityClass().getSimpleName();
 
             String queryString = "delete from " + className + " as model where model.isdeleted = 'Y'";
             Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
@@ -168,7 +168,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     //根据id获取对象
     public T findById(String id) {
         try {
-            Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            Class<T> entityClass = getEntityClass();
             T instance = (T) getSessionFactory().getCurrentSession().get(entityClass, id);
 
             return instance;
@@ -181,16 +181,20 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     public List<T> findByExample(T instance) {
 
         Session session = getSessionFactory().getCurrentSession();
-        List<T> results = session.createCriteria(getClass()).add(Example.create(instance)).list();
+        List<T> results = session.createCriteria(getEntityClass()).add(Example.create(instance)).list();
 
         return results;
 
     }*/
     
+    private Class<T> getEntityClass(){
+    	return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
     
     //根据属性值获取实体列表
     public List findByProperty(String propertyName, Object value) {
-        String className = getClass().getSimpleName();
+    	
+        String className = getEntityClass().getSimpleName();
 
         String queryString = "from " + className + " as model where model."
                 + propertyName + "= ?";

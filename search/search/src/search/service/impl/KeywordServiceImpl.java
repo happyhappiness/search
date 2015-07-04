@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import javassist.compiler.ast.Keyword;
+import search.domain.Keyword;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import search.dao.impl.KeywordDAOImpl;
 import search.service.KeywordService;
 
 @Service
-public class KeywordSeriviceImpl implements KeywordService {
+public class KeywordServiceImpl implements KeywordService {
 
 	@Resource
 	private KeywordDAO keywordDAO = new KeywordDAOImpl();

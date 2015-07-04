@@ -1,8 +1,11 @@
 package search.service;
 
+import java.util.List;
+
+import search.domain.Keyword;
+
 public interface SearchService {
 
-	//搜索缓存关键词表
-	
-	//搜索索引文件
+	//根据关键词搜索
+	List<Keyword> searchKeyword(String word);
 }
