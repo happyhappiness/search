@@ -28,7 +28,7 @@ public class DoParser {
 
 	
 	//获取html文件的标题
-	private void getTitle(String htmls) throws ParserException {
+	public String getTitle(String htmls) throws ParserException {
 		Parser parser = new Parser();
 		parser.setURL(htmls);
 		parser.setEncoding(ENCODE);
@@ -43,7 +43,7 @@ public class DoParser {
 	}
 
 	//获取html文件正文
-	private void getContent(String htmls){
+	public String getContent(String htmls){
 
 		stringExtractor = new StringExtractor (htmls);
         try
@@ -56,7 +56,7 @@ public class DoParser {
         }
 	}
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 
 		try {
 			DoParser doParser = new DoParser();
@@ -72,5 +72,5 @@ public class DoParser {
 		} catch (Exception e) {
 			System.out.println("Exception:" + e);
 		}
-	}
+	}*/
 }
