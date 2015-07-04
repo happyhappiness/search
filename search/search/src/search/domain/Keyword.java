@@ -3,10 +3,15 @@ package search.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -24,8 +29,8 @@ public class Keyword implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id")
-	private int id;
+	@Column(name = "kid")
+	private int kid;
 	
 	/*
 	 * keywordƒ⁄»›
@@ -38,7 +43,11 @@ public class Keyword implements java.io.Serializable {
 	 * keyword”≥…‰url
 	 * 
 	 * */
-	private Set urls = new HashSet(0);
+	@ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+	@JoinTable(name = "key_url",
+		joinColumns = {@JoinColumn(name ="kid",referencedColumnName="kid")},
+		inverseJoinColumns = {@JoinColumn( name = "uid", referencedColumnName ="uid")})
+	private Set<Url> urls = new HashSet<Url>(0);
 	// Constructors
 
 	/** default constructor */
@@ -46,19 +55,20 @@ public class Keyword implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Keyword(int id, String word) {
-		this.id = id;
+	public Keyword(int kid, String word, Set<Url> urls) {
+		this.kid = kid;
 		this.word = word;
+		this.urls = urls;
 	}
 
 	// Property accessors
 
-	public int getId() {
-		return this.id;
+	public int getKid() {
+		return this.kid;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setKid(int kid) {
+		this.kid = kid;
 	}
 
 	public String getWord() {
@@ -70,11 +80,11 @@ public class Keyword implements java.io.Serializable {
 	}
 	
 
-	public Set getUrls() {
+	public Set<Url> getUrls() {
 		return this.urls;
 	}
 
-	public void setUrls(Set urls) {
+	public void setUrls(Set<Url> urls) {
 		this.urls = urls;
 	}
 

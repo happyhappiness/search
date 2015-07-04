@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*"%>
 <%@ page contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="/struts-tags" prefix="s" %>
 <%request.setCharacterEncoding("utf-8"); %>
 <%
 String path = request.getContextPath();
@@ -12,7 +11,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>My JSP 'success.jsp' starting page</title>
+    
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -21,18 +21,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-  </head>
-  <body>
-  
-	<p>即时搜索引擎</p>
-	<br/>
-	<form method="post" action="search.action"  id="mainForm" method="post">
-	
-	    <s:input type="text" name="keyword.word" style="width: 558px; "/>
-	    
-	    <s:input type="submit" value="搜索" style="width: 169px; "/>
-	    
-	</form>
 
-</body>
+  </head>
+  
+  <body>
+         棒棒哒！ <br>. 
+  </body>
 </html>

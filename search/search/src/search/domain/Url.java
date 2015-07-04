@@ -4,10 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.*;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -24,7 +28,7 @@ public class Url implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "UID")
+	@Column(name = "uid")
 	private Integer uid;
 	
 	/*
@@ -52,15 +56,18 @@ public class Url implements java.io.Serializable {
 	 * url正文信息
 	 * 
 	 * */
-	@Column(name = "path", length = 2000)
+	@Column(name = "content", length = 2000)
 	private String content;
 	
 	/*
 	 * url对应关键字
 	 * 
 	 * */
-	@Column(name = "keywords")
-	private Set keywords = new HashSet(0);
+	@ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+	@JoinTable(name = "key_url",
+		joinColumns = {@JoinColumn(name ="uid",referencedColumnName="uid")},
+		inverseJoinColumns = {@JoinColumn( name = "kid", referencedColumnName ="kid")})
+	private Set<Keyword> keywords = new HashSet<Keyword>(0);
 
 	// Constructors
 
@@ -76,7 +83,7 @@ public class Url implements java.io.Serializable {
 
 	/** full constructor */
 	public Url(String url, String path, String title, String content,
-			Set keywords) {
+			Set<Keyword> keywords) {
 		this.url = url;
 		this.path = path;
 		this.title = title;
@@ -126,12 +133,11 @@ public class Url implements java.io.Serializable {
 		this.content = content;
 	}
 
-	public Set getKeywords() {
+	public Set<Keyword> getKeywords() {
 		return this.keywords;
 	}
 
-	public void setKeywords(Set keywords) {
+	public void setKeywords(Set<Keyword> keywords) {
 		this.keywords = keywords;
 	}
-
 }
