@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>search1</name>
+	<name>search</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -31,12 +31,12 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.genuitec.eclipse.springframework.springbuilder</name>
+			<name>com.genuitec.eclipse.ast.deploy.core.DeploymentBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.genuitec.eclipse.ast.deploy.core.DeploymentBuilder</name>
+			<name>com.genuitec.eclipse.springframework.springbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
