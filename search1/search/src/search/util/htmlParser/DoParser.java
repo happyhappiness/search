@@ -27,21 +27,5 @@ public abstract class DoParser {
 	//获取html文件正文
 	abstract public String getContent(String path);
 
-/*	public static void main(String[] args) {
 
-		try {
-			DoParser doParser = new DoParser();
-			//TODO 输入html路径
-			String htmls = "F:\\Sina-20150703010257062\\mirror\\2004.sina.com.cn\\index.html";
-			
-			//提取标题
-			doParser.getTitle(htmls);
-
-			//提取文本
-			doParser.getContent(htmls);
-			
-		} catch (Exception e) {
-			System.out.println("Exception:" + e);
-		}
-	}*/
 }

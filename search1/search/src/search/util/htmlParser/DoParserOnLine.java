@@ -15,20 +15,19 @@ public class DoParserOnLine extends DoParser{
 	}
 	
 	public String getTitle(String url){
-		String title;
+		String title = null;
 		
 		filter = new TagNameFilter(TITLE);		
 		try {
 			parser.setURL(url);
 			parser.setEncoding(ENCODE_ONLINE);
 			nodeList = parser.parse(filter);
+			title = nodeList.elementAt(0).toPlainTextString();
+			System.out.println("标题： " + title);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		}
 		
-		title = nodeList.elementAt(0).toPlainTextString();
-		System.out.println("标题： " + title);
-
 		return title;
 	}
 	

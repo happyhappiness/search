@@ -27,8 +27,9 @@ public class SpiderServiceImpl implements SpiderService{
 	private final String PATH_FILE_PATH = "e:\\url.txt";
 	
 	@Resource
-	private UrlService urlService = new UrlServiceImpl();
-	private Url url = new Url();
+	private UrlService urlService;
+	@Resource
+	private Url url;
 	
 	//heritix接口：获取urlList信息
 	@Override
@@ -37,7 +38,8 @@ public class SpiderServiceImpl implements SpiderService{
 		heritixHelper = new DoHeritix();
 		return heritixHelper.getUrl(URL_FILE_PATH);
 	}
-	
+
+
 	//heritix接口：获取pathList信息
 	@Override
 	public List<String> getPathList() {
@@ -95,5 +97,22 @@ public class SpiderServiceImpl implements SpiderService{
 		System.out.println("STORE URL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
 
+	//get and set
+	
+	public UrlService getUrlService() {
+		return urlService;
+	}
+
+	public void setUrlService(UrlService urlService) {
+		this.urlService = urlService;
+	}
+
+	public Url getUrl() {
+		return url;
+	}
+
+	public void setUrl(Url url) {
+		this.url = url;
+	}
 
 }

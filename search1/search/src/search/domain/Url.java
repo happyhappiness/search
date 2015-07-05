@@ -45,7 +45,7 @@ public class Url implements java.io.Serializable {
 	/*
 	 * url正文信息
 	 */
-	@Column(name = "content", length = 2000)
+	@Column(name = "content")
 	private String content;
 	
 	@Column(name = "indexed")

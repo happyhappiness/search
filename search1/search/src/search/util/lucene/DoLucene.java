@@ -10,8 +10,12 @@ import java.io.IOException;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.lucene.analysis.Analyzer;  
 import org.apache.lucene.document.Document;  
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;  
 import org.apache.lucene.index.IndexWriter;  
 import org.apache.lucene.index.IndexWriterConfig;  
@@ -26,6 +30,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;  
 import org.wltea.analyzer.lucene.IKAnalyzer;  
+
+import search.domain.Url;
   
 
 /**
@@ -36,7 +42,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
  * 
  * */
 
-public class Lucene {  
+public class DoLucene {  
 	
 	private final Directory directory;
 	private final Analyzer analyzer;
@@ -45,6 +51,7 @@ public class Lucene {
 	private final IndexReader indexReader;
 	private final IndexSearcher searcher;
 	private final MultiFieldQueryParser parser;
+	private List<Url> urlList;
 	private Query query;
 	private TopDocs topDocs;
 	private final String indexPath = "e:\\index";
@@ -53,15 +60,16 @@ public class Lucene {
 	private final int TOPURL = 5;
 	
 	
-	public Lucene() throws IOException {
+	public DoLucene(List<Url> urlList) throws IOException {
 		//初始化indexWriter
 		directory = SimpleFSDirectory.open(new File(indexPath));//存储在内存中
 		analyzer = new IKAnalyzer();
 		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer); 
 		indexWriter = new IndexWriter(directory, writerConfig); 
-
+		this.urlList = urlList;
 		
 		//建立索引表
+		
     	createIndex();
     	
 		//初始化searcher和parser
@@ -70,14 +78,6 @@ public class Lucene {
 		parser = new MultiFieldQueryParser(Version.LUCENE_40, FIELDNAME, analyzer);  
 		parser.setDefaultOperator(QueryParser.OR_OPERATOR); 
 	}
-  
-	
-	//调用数据处理器，装载Document，建立索引表
-	private void createIndex() throws IOException {
-		GetDocument getDocument = new GetDocument();
-		getDocument.createIndex(indexWriter, INDEXNAME, FIELDNAME);
-		indexWriter.close();  
-	} 
 	
 	//根据关键词查询
     public void query(String request) throws IOException {
@@ -98,6 +98,22 @@ public class Lucene {
          	 clear();
          }  
     }
+	
+	//调用数据处理器，装载Document，建立索引表
+	private void createIndex() throws IOException {
+		
+		Document document;
+		for(Url url : urlList) {			
+        	document = new Document();  
+    	    document.add(new Field(INDEXNAME, url.getUrl(), Field.Store.YES, Field.Index.NOT_ANALYZED));  
+            document.add(new Field(FIELDNAME[0], url.getTitle(), Field.Store.YES, Field.Index.ANALYZED));  
+            document.add(new Field(FIELDNAME[1], url.getContent(), Field.Store.YES, Field.Index.ANALYZED));  
+            indexWriter.addDocument(document);  
+        } 
+		indexWriter.close();  
+	} 
+	
+	
 	
     //释放资源
     private void clear() {

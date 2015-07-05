@@ -4,19 +4,20 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import search.dao.UrlDAO;
 import search.dao.impl.UrlDAOImpl;
 import search.domain.Url;
 import search.service.UrlService;
 
 import org.springframework.stereotype.Service;
 
+import search.dao.UrlDAO;
+
 @Service
 public class UrlServiceImpl extends UrlDAOImpl implements UrlService{
 
 	@Resource 
-	private UrlDAO urlDAO = new UrlDAOImpl();
-	
+	private UrlDAO urlDAO;
+
 	@Override
 	//根据路径获取url对象
 	public List<Url> getUrlByPath(String path) {
@@ -51,6 +52,14 @@ public class UrlServiceImpl extends UrlDAOImpl implements UrlService{
 		urlDAO.attachDirtyUrl(url);
 	}
 
+	//get and set	
+	public UrlDAO getUrlDAO() {
+		return urlDAO;
+	}
+
+	public void setUrlDAO(UrlDAO urlDAO) {
+		this.urlDAO = urlDAO;
+	}
 
 	
 }

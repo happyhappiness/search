@@ -9,6 +9,7 @@ import search.domain.Keyword;
 import org.springframework.stereotype.Service;
 
 import search.dao.KeywordDAO;
+
 import search.dao.impl.KeywordDAOImpl;
 import search.service.KeywordService;
 
@@ -16,7 +17,7 @@ import search.service.KeywordService;
 public class KeywordServiceImpl implements KeywordService {
 
 	@Resource
-	private KeywordDAO keywordDAO = new KeywordDAOImpl();
+	private KeywordDAO keywordDAO;
 	
 	//根据关键字内容获取关键字对象
 	@Override
@@ -38,5 +39,13 @@ public class KeywordServiceImpl implements KeywordService {
 	public void savaOrUpdate(Keyword keyword) {
 		keywordDAO.attachDirtyKeyword(keyword);
 	}
+	
+	//get and set
+	public KeywordDAO getKeywordDAO() {
+		return keywordDAO;
+	}
 
+	public void setKeywordDAO(KeywordDAO keywordDAO) {
+		this.keywordDAO = keywordDAO;
+	}
 }

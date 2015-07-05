@@ -9,6 +9,8 @@ import org.apache.struts2.convention.annotation.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.opensymphony.xwork2.ActionSupport;
+
 import search.domain.Keyword;
 import search.domain.Url;
 import search.service.SearchService;
@@ -20,15 +22,17 @@ import search.service.impl.SpiderServiceImpl;
 @Namespace("/")
 @Scope("prototype")
 @ParentPackage("struts-default")
-public class SearchAction {
+public class SearchAction extends ActionSupport{
 	 
 	 
 	 @Resource
-	 private SearchService searchService = new SearchServiceImpl();
-	 private SpiderService spiderService = new SpiderServiceImpl();
+	 private SearchService searchService;
+	 @Resource
+	 private SpiderService spiderService;
 	 private String queryString;
-	 
-	 @Action(value = "search", results = {  
+	
+
+	@Action(value = "search", results = {  
 		 @Result(name = "success", location = "/success.jsp")})
 	 public String search() {
 		 if(queryString != null){
@@ -41,8 +45,12 @@ public class SearchAction {
 			spiderService.storeUrl(urlList);
 //			spiderService.storeUrl(urlList, pathList);
 		    searchService.searchKeyword(queryString);
+		    return "success";
+		    
 		 }
-		 return "success";
+		 
+		 return ERROR;
+		 
 		 
 	 }
 
@@ -58,4 +66,23 @@ public class SearchAction {
 	}
 	 
 	 
+	public SearchService getSearchService() {
+		return searchService;
+	}
+
+
+	public void setSearchService(SearchService searchService) {
+		this.searchService = searchService;
+	}
+
+
+	public SpiderService getSpiderService() {
+		return spiderService;
+	}
+
+
+	public void setSpiderService(SpiderService spiderService) {
+		this.spiderService = spiderService;
+	}
+
 }

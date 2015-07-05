@@ -7,12 +7,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import search.dao.BaseDAO;
 
-import javax.annotation.Resource;
+import search.dao.BaseDAO;
+import search.domain.Url;
+
+
+
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 
 @Repository
@@ -31,18 +36,6 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
         return this.sessionFactory;
     }
 
-    // 根据ID加载实体
-    @SuppressWarnings("unchecked")
-    public T get(Class<T> entityClazz, Serializable id) {
-        return (T) getSessionFactory().getCurrentSession()
-                .get(entityClazz, id);
-    }
-
-    // 保存实体
-    public Serializable save(T entity) {
-        return getSessionFactory().getCurrentSession()
-                .save(entity);
-    }
 
     // 更新实体
     public void update(T entity) {
@@ -52,15 +45,6 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     // 删除实体
     public void delete(T entity) {
         getSessionFactory().getCurrentSession().delete(entity);
-    }
-
-    // 根据ID删除实体
-    public void delete(Class<T> entityClazz, Serializable id) {
-        getSessionFactory().getCurrentSession()
-                .createQuery("delete " + entityClazz.getSimpleName()
-                        + " en where en.id = ?")
-                .setParameter("0", id)
-                .executeUpdate();
     }
 
     // 获取所有实体
@@ -80,25 +64,6 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
         return 0;
     }
 
- /*   @Override
-    //更新数据库，删除所有已删除信息，彻底删除
-    public boolean removeALLDeleted() {
-        try {
-            String className = getEntityClass().getSimpleName();
-
-            String queryString = "delete from " + className + " as model where model.isdeleted = 'Y'";
-            Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
-            query.executeUpdate();
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }*/
-
-
     // 根据HQL语句查询实体
     @SuppressWarnings("unchecked")
     protected List<T> find(String hql) {
@@ -107,63 +72,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
                 .list();
     }
 
-    // 根据带占位符参数HQL语句查询实体
-    @SuppressWarnings("unchecked")
-    protected List<T> find(String hql, Object... params) {
-        // 创建查询
-        Query query = getSessionFactory().getCurrentSession()
-                .createQuery(hql);
-        // 为包含占位符的HQL语句设置参数
-        for (int i = 0, len = params.length; i < len; i++) {
-            query.setParameter(i + "", params[i]);
-        }
-        return (List<T>) query.list();
-    }
-
-    /**
-     * 使用hql 语句进行分页查询操作
-     *
-     * @param hql      需要查询的hql语句
-     * @param pageNo   查询第pageNo页的记录
-     * @param pageSize 每页需要显示的记录数
-     * @return 当前页的所有记录
-     */
-    @SuppressWarnings("unchecked")
-    protected List<T> findByPage(String hql,
-                                 int pageNo, int pageSize) {
-        // 创建查询
-        return getSessionFactory().getCurrentSession()
-                .createQuery(hql)
-                        // 执行分页
-                .setFirstResult((pageNo - 1) * pageSize)
-                .setMaxResults(pageSize)
-                .list();
-    }
-
-    /**
-     * 使用hql 语句进行分页查询操作
-     *
-     * @param hql      需要查询的hql语句
-     * @param params   如果hql带占位符参数，params用于传入占位符参数
-     * @param pageNo   查询第pageNo页的记录
-     * @param pageSize 每页需要显示的记录数
-     * @return 当前页的所有记录
-     */
-    @SuppressWarnings("unchecked")
-    protected List<T> findByPage(String hql, int pageNo, int pageSize
-            , Object... params) {
-        // 创建查询
-        Query query = getSessionFactory().getCurrentSession()
-                .createQuery(hql);
-        // 为包含占位符的HQL语句设置参数
-        for (int i = 0, len = params.length; i < len; i++) {
-            query.setParameter(i + "", params[i]);
-        }
-        // 执行分页，并返回查询结果
-        return query.setFirstResult((pageNo - 1) * pageSize)
-                .setMaxResults(pageSize)
-                .list();
-    }
+   
 
     //根据id获取对象
     public T findById(String id) {
@@ -176,16 +85,6 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
             throw re;
         }
     }
-/*
-    //根据实体
-    public List<T> findByExample(T instance) {
-
-        Session session = getSessionFactory().getCurrentSession();
-        List<T> results = session.createCriteria(getEntityClass()).add(Example.create(instance)).list();
-
-        return results;
-
-    }*/
     
     private Class<T> getEntityClass(){
     	return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -203,22 +102,9 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
         return query.list();
     }
 
-    //返回持久化对象
-    public T merge(T detachedInstance) {
-
-        T result = (T) getSessionFactory().getCurrentSession().merge(detachedInstance);
-
-        return result;
-    }
-
     //保存 对象持久化 better
     public void attachDirty(T instance) {
         getSessionFactory().getCurrentSession().saveOrUpdate(instance);
-    }
-
-    //分离
-    public void attachClean(T instance) {
-        getSessionFactory().getCurrentSession().lock(instance, LockMode.NONE);
     }
 }
 
