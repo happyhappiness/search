@@ -81,8 +81,9 @@ public class SpiderServiceImpl implements SpiderService{
 		String currUrl;
 		for( int i = 0; i < n; i++) {
 			currUrl = urlList.get(i);
+			System.out.println(currUrl);
 			
-			url.setUrl(urlList.get(i));
+			url.setUrl(currUrl);
 			url.setPath(null);
 			url.setTitle(parserHelper.getTitle(currUrl));
 			url.setContent(parserHelper.getContent(currUrl));

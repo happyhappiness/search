@@ -1,6 +1,8 @@
 package search.action;
 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.struts2.convention.annotation.*;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import search.domain.Keyword;
 import search.domain.Url;
 import search.service.SearchService;
+import search.service.SpiderService;
 import search.service.impl.SearchServiceImpl;
+import search.service.impl.SpiderServiceImpl;
 
 @Controller
 @Namespace("/")
@@ -18,18 +22,25 @@ import search.service.impl.SearchServiceImpl;
 @ParentPackage("struts-default")
 public class SearchAction {
 	 
-	 private String queryString;
 	 
 	 @Resource
 	 private SearchService searchService = new SearchServiceImpl();
+	 private SpiderService spiderService = new SpiderServiceImpl();
+	 private String queryString;
 	 
 	 @Action(value = "search", results = {  
 		 @Result(name = "success", location = "/success.jsp")})
 	 public String search() {
 		 if(queryString != null){
 			 System.out.println(queryString);
-			 
-			 searchService.searchKeyword(queryString);
+		 
+		//使用SpiderService获取并存储url信息
+			 List<String> urlList = spiderService.getUrlList();
+//			 List<String> pathList = spiderService.getPathList();
+			
+			spiderService.storeUrl(urlList);
+//			spiderService.storeUrl(urlList, pathList);
+		    searchService.searchKeyword(queryString);
 		 }
 		 return "success";
 		 

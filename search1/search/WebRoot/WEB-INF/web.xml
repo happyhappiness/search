@@ -24,9 +24,11 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+
   <servlet>
-    <servlet-name>spiderHelper</servlet-name>
-    <servlet-class>seach.servlet.SpiderServlet</servlet-class>
+    <servlet-name>SpiderServlet</servlet-name>
+    <servlet-class>search.servlet.SpiderServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
-	</servlet>
+  </servlet>
+
 </web-app>

@@ -43,7 +43,7 @@
 		<!-- 包扫描的方式加载注解类(推荐) -->  
         <property name="packagesToScan">  
             <list>  
-                <value>search.domain</value>  
+                <value>search.*</value>  
             </list>  
         </property>
 	</bean></beans>
