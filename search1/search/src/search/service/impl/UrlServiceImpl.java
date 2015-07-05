@@ -16,17 +16,27 @@ public class UrlServiceImpl extends UrlDAOImpl implements UrlService{
 
 	@Resource 
 	private UrlDAO urlDAO = new UrlDAOImpl();
-	@Override
 	
+	@Override
+	//根据路径获取url对象
 	public List<Url> getUrlByPath(String path) {
 		return urlDAO.findUrlByProperty("path", path);
 	}
 
+	//根据关键字获取url对象
 	@Override
 	public List<Url> getUrlByKeyword(String keyword) {
 		return urlDAO.findUrlByProperty("keyword", keyword);
 	}
+	
 
+	//获取未分析的url
+	@Override
+	public List<Url> getUrlByIndexed() {
+		return urlDAO.findUrlByProperty("indexed", false);
+	}
+
+	//根据属性删除url
 	@Override
 	public void delteUrlByProperty(String propertyName, Object value) {
 		List<Url> urlList = urlDAO.findUrlByProperty(propertyName, value);
@@ -35,10 +45,12 @@ public class UrlServiceImpl extends UrlDAOImpl implements UrlService{
 		}
 	}
 
+	//保存或更新url
 	@Override
 	public void saveOrUpdateUrl(Url url) {
 		urlDAO.attachDirtyUrl(url);
 	}
+
 
 	
 }

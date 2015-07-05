@@ -47,8 +47,8 @@ public class Lucene {
 	private final MultiFieldQueryParser parser;
 	private Query query;
 	private TopDocs topDocs;
-	private final String indexPath = "f:\\index";
-	private final String INDEXNAME = "URL";
+	private final String indexPath = "e:\\index";
+	private final String INDEXNAME = "url";
 	private final String[] FIELDNAME = new String[] {"title", "content"};
 	private final int TOPURL = 5;
 	
@@ -59,6 +59,7 @@ public class Lucene {
 		analyzer = new IKAnalyzer();
 		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer); 
 		indexWriter = new IndexWriter(directory, writerConfig); 
+
 		
 		//建立索引表
     	createIndex();

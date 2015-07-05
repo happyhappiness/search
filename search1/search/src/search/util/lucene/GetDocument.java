@@ -7,6 +7,10 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 
+import search.domain.Url;
+import search.service.UrlService;
+import search.service.impl.UrlServiceImpl;
+
 /**
  * 
  * 《数据处理器》
@@ -17,10 +21,9 @@ import org.apache.lucene.index.IndexWriter;
 public class GetDocument {
 	
 	private Document document;
-	private ArrayList<String> title;
-	private ArrayList<String> content;
-	private ArrayList<String> index;
+	private ArrayList<Url> urlList;
 	
+	/*
 	//获取原始数据
 	private void getInitData() {
 		//TODO //元数据  
@@ -49,18 +52,23 @@ public class GetDocument {
         index.add("https://adhui.com");
         index.add("https://baiduhsi.com");
         
-	}
+	}*/
 	
 	public void createIndex(IndexWriter indexWriter, String indexName, String[] fieldName) throws IOException{
-		//初始化数据
-        getInitData();
+		//访问数据库，获取待索引的url对象
+		UrlService urlService = new UrlServiceImpl();
+		urlList = (ArrayList<Url>) urlService.getUrlByIndexed();
         
-        int n = content.size();
-        for( int i = 0; i < n; i++) {
+       for(Url url : urlList) {
+    	   
+    	    //更新url索引状态
+    	    url.setIndexed(true);
+    	    urlService.saveOrUpdateUrl(url);
+    	    
         	document = new Document();  
-    	    document.add(new Field(indexName, index.get(i), Field.Store.YES, Field.Index.NOT_ANALYZED));  
-            document.add(new Field(fieldName[0], title.get(i), Field.Store.YES, Field.Index.ANALYZED));  
-            document.add(new Field(fieldName[1], content.get(i), Field.Store.YES, Field.Index.ANALYZED));  
+    	    document.add(new Field(indexName, url.getUrl(), Field.Store.YES, Field.Index.NOT_ANALYZED));  
+            document.add(new Field(fieldName[0], url.getTitle(), Field.Store.YES, Field.Index.ANALYZED));  
+            document.add(new Field(fieldName[1], url.getContent(), Field.Store.YES, Field.Index.ANALYZED));  
             indexWriter.addDocument(document);  
         } 
 	}

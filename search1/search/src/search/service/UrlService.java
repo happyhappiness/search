@@ -15,6 +15,9 @@ public interface UrlService {
 	//根据keyword获取url
 	List<Url> getUrlByKeyword(String keyword);
 	
+	//获取所有url
+	List<Url> getUrlByIndexed();
+	
 	//删除url
 	void delteUrlByProperty(String propertyName, Object value);
 	

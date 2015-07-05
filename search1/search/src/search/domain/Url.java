@@ -47,7 +47,9 @@ public class Url implements java.io.Serializable {
 	 */
 	@Column(name = "content", length = 2000)
 	private String content;
-
+	
+	@Column(name = "indexed")
+	private boolean indexed;
 
 	/*
 	 * url¶ÔÓ¦¹Ø¼ü×Ö
@@ -115,6 +117,7 @@ public class Url implements java.io.Serializable {
 		this.title = title;
 	}
 
+	
 	public String getContent() {
 		return this.content;
 	}
@@ -122,12 +125,25 @@ public class Url implements java.io.Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+
+	public boolean getIndexed() {
+		return indexed;
+	}
+
+	public void setIndexed(boolean indexed) {
+		this.indexed = indexed;
+	}
 
 	public Set<Keyword> getKeywords() {
 		return this.keywords;
 	}
 
+	
 	public void setKeywords(Set<Keyword> keywords) {
 		this.keywords = keywords;
 	}
+	
+
+
 }
