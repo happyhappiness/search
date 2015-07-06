@@ -40,6 +40,11 @@ public class Keyword implements java.io.Serializable {
 	@Column(name = "word", length = 50)
 	private String word;
 
+	
+	@Column(name = "uid")
+	private int uid;
+	
+
 	/*
 	 * keyword”≥…‰url
 	 */
@@ -89,4 +94,11 @@ public class Keyword implements java.io.Serializable {
 		this.urls = urls;
 	}
 
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
 }

@@ -4,30 +4,30 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import search.dao.KeywordDAO;
+import search.dao.UrlDAO;
 import search.domain.Url;
 
-import org.htmlparser.util.ParserException;
 import org.springframework.stereotype.Service;
 
 import search.service.SpiderService;
-import search.service.UrlService;
 import search.util.heritix.DoHeritix;
 import search.util.htmlParser.DoParser;
-import search.util.htmlParser.DoParserOffLine;
-import search.util.htmlParser.DoParserOnLine;
 
 
 @Service
 public class SpiderServiceImpl implements SpiderService{
 
-	private DoParser parserHelper;
+	private DoParser parserHelper = new DoParser();
 	private DoHeritix heritixHelper;
-	private final String URL_FILE_PATH = "e:\\url.txt";
+	private final String URL_FILE_PATH = "f:\\url.txt";
 	//TODO
-	private final String PATH_FILE_PATH = "e:\\url.txt";
+	private final String PATH_FILE_PATH = "f:\\path.txt";
 	
 	@Resource
-	private UrlService urlService;
+	private UrlDAO urlDAO;
+	@Resource 
+	private KeywordDAO keywordDAO;
 	@Resource
 	private Url url;
 	
@@ -45,50 +45,71 @@ public class SpiderServiceImpl implements SpiderService{
 	public List<String> getPathList() {
 		
 		heritixHelper = new DoHeritix();
-		return heritixHelper.getUrl(PATH_FILE_PATH);
+		return heritixHelper.getPath(PATH_FILE_PATH);
 	}
 	
 	//借助DoParserOffLine从url和path中获取url对象并存储
 	@Override
 	public void storeUrl(List<String> urlList, List<String> pathList) {
 		
-		parserHelper = new DoParserOffLine();
+		//List<Url> currUrlList;
 		
 		int n;
 		n = urlList.size();
 		String currPath;
+		String currUrl;
 		for( int i = 0; i < n; i++) {
 			
 			currPath = pathList.get(i);
-			
-			url.setUrl(urlList.get(i));
+			currUrl = urlList.get(i);
+			System.out.println(currUrl);
+			url = new Url();
+		
+			url.setUrl(currUrl);
 			url.setPath(currPath);
 			url.setTitle(parserHelper.getTitle(currPath));
-			url.setContent(parserHelper.getContent(currPath));
-			url.setIndexed(false);
+			url.setContent(" ");/*
+			url.setIndexed(false);*/
 			//保存url 
-			urlService.saveOrUpdateUrl(url);
+			urlDAO.attachDirtyUrl(url);
 		}
 		
 		System.out.println("STORE URL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				
 	}
+	
+	//获取url表的大小
+	@Override
+	public long getUrlSize() {
+		return urlDAO.findUrlsCount();
+	}
+	
+	
+	//删除缓存表
+	@Override
+	public void clearCache() {
+		keywordDAO.deleteAll();
+	}
 
-	//借助DoParserOnLine从url获取url对象并存储
+
+/*	//借助DoParserOnLine从url获取url对象并存储
 	@Override
 	public void storeUrl(List<String> urlList) {
-		parserHelper = new DoParserOnLine();
+		
+		//List<Url> currUrlList;
+		
 		int n;
 		n = urlList.size();
 		String currUrl;
 		for( int i = 0; i < n; i++) {
 			currUrl = urlList.get(i);
 			System.out.println(currUrl);
-			
+
 			url.setUrl(currUrl);
 			url.setPath(null);
 			url.setTitle(parserHelper.getTitle(currUrl));
 			url.setContent(parserHelper.getContent(currUrl));
+			url.setContent(" ");
 			url.setIndexed(false);
 			//保存url 
 			urlService.saveOrUpdateUrl(url);
@@ -96,20 +117,34 @@ public class SpiderServiceImpl implements SpiderService{
 		
 		System.out.println("STORE URL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
-
+*/
 	//get and set
 	
-	public UrlService getUrlService() {
-		return urlService;
+
+	public UrlDAO getUrlDAO() {
+		return urlDAO;
 	}
 
-	public void setUrlService(UrlService urlService) {
-		this.urlService = urlService;
+
+	public void setUrlDAO(UrlDAO urlDAO) {
+		this.urlDAO = urlDAO;
 	}
+
+
+	public KeywordDAO getKeywordDAO() {
+		return keywordDAO;
+	}
+
+
+	public void setKeywordDAO(KeywordDAO keywordDAO) {
+		this.keywordDAO = keywordDAO;
+	}
+
 
 	public Url getUrl() {
 		return url;
 	}
+
 
 	public void setUrl(Url url) {
 		this.url = url;

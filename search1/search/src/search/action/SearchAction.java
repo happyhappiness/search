@@ -37,21 +37,14 @@ public class SearchAction extends ActionSupport{
 	 public String search() {
 		 if(queryString != null){
 			 System.out.println(queryString);
-		 
-		//使用SpiderService获取并存储url信息
-			 List<String> urlList = spiderService.getUrlList();
-//			 List<String> pathList = spiderService.getPathList();
-			
-			spiderService.storeUrl(urlList);
-//			spiderService.storeUrl(urlList, pathList);
+		
 		    searchService.searchKeyword(queryString);
 		    return "success";
 		    
 		 }
 		 
 		 return ERROR;
-		 
-		 
+		 	 
 	 }
 
 

@@ -2,10 +2,10 @@ package search.service;
 
 import java.util.List;
 
-import search.domain.Keyword;
+import search.domain.Url;
 
 public interface SearchService {
 
 	//¸ù¾Ý¹Ø¼ü´ÊËÑË÷
-	List<Keyword> searchKeyword(String word);
+	List<Url> searchKeyword(String word);
 }

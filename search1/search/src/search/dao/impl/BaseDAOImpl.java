@@ -64,9 +64,20 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
         return 0;
     }
 
+    //根据实体获取对象列表
+    @Override
+    public List<T> findByExample(T instance) {
+
+        Session session = getSessionFactory().getCurrentSession();
+        List<T> results = session.createCriteria(getClass()).add(Example.create(instance)).list();
+
+        return results;
+    }
+    
     // 根据HQL语句查询实体
+    @Override
     @SuppressWarnings("unchecked")
-    protected List<T> find(String hql) {
+	public List<T> find(String hql) {
         return (List<T>) getSessionFactory().getCurrentSession()
                 .createQuery(hql)
                 .list();

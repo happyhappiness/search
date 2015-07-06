@@ -25,10 +25,18 @@ public interface BaseDAO<T>
     List<T> findAll(Class<T> entityClazz);
     // 获取实体总数
     long findCount(Class<T> entityClazz);
+    
+    //使用hql语句查询 
+	List<T> find(String hql);
+	
+    //获取基本属性相同的实体
+	List<T> findByExample(T instance);
   
     List findByProperty(String propertyName, Object value);
 
     void attachDirty(T instance);
+
+
 
 }
 

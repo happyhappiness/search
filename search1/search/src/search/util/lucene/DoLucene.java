@@ -19,6 +19,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;  
 import org.apache.lucene.index.IndexWriter;  
 import org.apache.lucene.index.IndexWriterConfig;  
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;  
 import org.apache.lucene.queryparser.classic.QueryParser;  
@@ -64,7 +65,9 @@ public class DoLucene {
 		//初始化indexWriter
 		directory = SimpleFSDirectory.open(new File(indexPath));//存储在内存中
 		analyzer = new IKAnalyzer();
-		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer); 
+		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer);
+		//每次更新索引表
+		writerConfig.setOpenMode(OpenMode.CREATE);
 		indexWriter = new IndexWriter(directory, writerConfig); 
 		this.urlList = urlList;
 		
@@ -80,7 +83,8 @@ public class DoLucene {
 	}
 	
 	//根据关键词查询
-    public void query(String request) throws IOException {
+    public List<String> query(String request) throws IOException {
+    	 List<String> urlNameList = new ArrayList<String>();
     	
     	 try {  
              Query query = parser.parse(request);  
@@ -89,14 +93,17 @@ public class DoLucene {
              ScoreDoc[] docs = topDocs.scoreDocs;  
              for(ScoreDoc doc : docs){  
                  Document d = searcher.doc(doc.doc);  
+                 urlNameList.add(d.get(INDEXNAME));
                  System.out.println("内容: "+ d.get(INDEXNAME) + "\t" +
                 		 d.get(FIELDNAME[0]) + "\t" + d.get(FIELDNAME[1]));  
              }  
          } catch (ParseException e) {    
              e.printStackTrace();  
          }finally{
-         	 clear();
+         	 clear();         	
          }  
+    	 
+    	 return urlNameList;
     }
 	
 	//调用数据处理器，装载Document，建立索引表

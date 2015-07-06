@@ -5,6 +5,25 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:applicationContext.xml</param-value>
   </context-param>
+  
+<!-- charset 配置 -->
+  <filter>
+	<filter-name>CharacterEncodingFilter</filter-name>
+	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	<init-param>
+	<param-name>encoding</param-name>
+	<param-value>UTF-8</param-value>
+	</init-param>
+	<init-param>
+	<param-name>forceEncoding</param-name>
+	<param-value>true</param-value>
+	</init-param>
+  </filter>
+  <filter-mapping>
+	<filter-name>CharacterEncodingFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+<!-- struts2 配置 -->
   <filter>
     <filter-name>struts2</filter-name>
     <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
@@ -16,10 +35,19 @@
       <param-name>actionPackages</param-name>
       <param-value>search.action</param-value>
     </init-param>
-  </filter>
+  </filter>  
   <filter-mapping>
     <filter-name>struts2</filter-name>
     <url-pattern>*.action</url-pattern>
+  </filter-mapping>
+<!-- hibernate 延迟加载 spring-orm.jar -->
+  <filter>
+   <filter-name>lazy</filter-name>
+   <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+  </filter>
+  <filter-mapping>
+   <filter-name>lazy</filter-name>
+   <url-pattern>/*</url-pattern>
   </filter-mapping>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -30,5 +58,9 @@
     <servlet-class>search.servlet.SpiderServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <servlet-mapping>
+  	 <servlet-name>SpiderServlet</servlet-name>
+     <url-pattern>/search/servlet/SpiderServlet</url-pattern>
+  </servlet-mapping>
 
 </web-app>

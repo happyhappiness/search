@@ -54,7 +54,6 @@ public class DoHeritix {
     public List<String> getUrl(String urlFileName){
     	
     	readFileByLines(urlFileName);
-    	System.out.println(Arrays.toString(infoList.toArray()));
     	return infoList;
     }
     

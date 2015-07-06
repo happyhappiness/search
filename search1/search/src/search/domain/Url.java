@@ -27,19 +27,19 @@ public class Url implements java.io.Serializable {
 	/*
 	 * url名称
 	 */
-	@Column(name = "url", length = 50)
+	@Column(name = "url", length = 1000)
 	private String url;
 
 	/*
 	 * url存储路径
 	 */
-	@Column(name = "path", length = 100)
+	@Column(name = "path", length = 1000)
 	private String path;
 
 	/*
 	 * url标题信息
 	 */
-	@Column(name = "title", length = 100)
+	@Column(name = "title", length = 1000)
 	private String title;
 
 	/*
@@ -47,10 +47,10 @@ public class Url implements java.io.Serializable {
 	 */
 	@Column(name = "content")
 	private String content;
-	
+	/*
 	@Column(name = "indexed")
 	private boolean indexed;
-
+*/
 	/*
 	 * url对应关键字
 	 */
@@ -126,7 +126,7 @@ public class Url implements java.io.Serializable {
 		this.content = content;
 	}
 	
-
+/*
 	public boolean getIndexed() {
 		return indexed;
 	}
@@ -134,7 +134,7 @@ public class Url implements java.io.Serializable {
 	public void setIndexed(boolean indexed) {
 		this.indexed = indexed;
 	}
-
+*/
 	public Set<Keyword> getKeywords() {
 		return this.keywords;
 	}
