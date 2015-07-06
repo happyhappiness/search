@@ -19,7 +19,7 @@ import search.util.lucene.DoLucene;
 @Service
 public class SearchServiceImpl implements SearchService{
 
-	private DoLucene luceneHelper;
+	private DoLucene luceneHelper = new DoLucene();
 	@Resource
 	private KeywordDAO keywordDAO;
 	@Resource
@@ -28,11 +28,25 @@ public class SearchServiceImpl implements SearchService{
 	private Keyword keyword;
 	
 
+	//创建索引表
+	@Override
+	public void updateIndex() {
+			
+		List<Url> urlList = urlDAO.findAllUrls();
+		try {
+			luceneHelper.createIndex(urlList);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	//搜索关键字
 	@Override
 	@Transactional
 	public List<Url> searchKeyword(String word) {
 		
-		//查询缓存表:存在则不更新索引
+		//查询缓存表:存在则不搜索索引表
 		List<Keyword> keywordList = keywordDAO.findKeywordByProperty("word", word);
 		List<Url> urlList = new ArrayList<Url>();
 		
@@ -45,15 +59,10 @@ public class SearchServiceImpl implements SearchService{
 			return urlList;
 		}
 		
-		//访问数据库，获取此时的url对象
-		urlList = (ArrayList<Url>) urlDAO.findAllUrls();
-		
-		//调用lucene更新索引
-		try {
-			luceneHelper = new DoLucene(urlList);
+		//搜索索引表
+	    try {
 			List<String> urlNameList = luceneHelper.query(word);
-			
-			//获取关键词对应url对象
+
 			urlList.clear();
 			for(String urlName : urlNameList) {
 				urlList.add(urlDAO.getUrlByUrl(urlName).get(0));
@@ -71,8 +80,7 @@ public class SearchServiceImpl implements SearchService{
 			keywordDAO.attachDirtyKeyword(keyword);
 		}
 		
-		return urlList;
-		
+		return urlList;		
 	}
 
 	//get and set

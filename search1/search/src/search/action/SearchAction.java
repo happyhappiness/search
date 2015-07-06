@@ -38,11 +38,11 @@ public class SearchAction extends ActionSupport{
 		 if(queryString != null){
 			 System.out.println(queryString);
 		
+			//ËÑË÷
 		    searchService.searchKeyword(queryString);
-		    return "success";
+		    return SUCCESS;
 		    
-		 }
-		 
+		 }		 
 		 return ERROR;
 		 	 
 	 }

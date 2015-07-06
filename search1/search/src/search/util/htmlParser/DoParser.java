@@ -67,7 +67,9 @@ public class DoParser {
 		
 		System.out.println ("内容：" + content); 
 		System.out.println ("==================================================="); 
-		
+		//!!!!!!!!!!!!截取前30000个字符!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if(content.length() > 30000)
+			content = content.substring(0, 30000);
 		return content;
 	}
 	

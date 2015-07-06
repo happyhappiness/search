@@ -17,9 +17,6 @@ public interface SpiderService {
 	//根据url信息和path信息生成并存储url对象
 	void storeUrl(List<String> urlList, List<String> pathList);
 	
-	//获取url表大小
-	long getUrlSize();
-	
 	//删除缓存表
 	void clearCache();
 /*	//根据url信息生成并存储url对象

@@ -43,7 +43,7 @@ public class UrlDAOImpl extends BaseDAOImpl<Url> implements UrlDAO{
 	//根据主键获取url对象
 	@Override
 	public List<Url> getUrlByUid(int uid) {
-		return findUrlByProperty("uid", uid);
+		return findByProperty("uid", uid);
 	}
 
 
@@ -51,7 +51,7 @@ public class UrlDAOImpl extends BaseDAOImpl<Url> implements UrlDAO{
 	@Override
 	public List<Url> getUrlByUrl(String url) {
 		
-		return findUrlByProperty("url", url);
+		return findByProperty("url", url);
 	}
 	
     //根据属性值获取对象   
@@ -62,7 +62,6 @@ public class UrlDAOImpl extends BaseDAOImpl<Url> implements UrlDAO{
     //根据example获取对象
 	@Override
 	public List<Url> findUrlByExample(Url url) {
-	
 		return findByExample(url);	
 	}
 

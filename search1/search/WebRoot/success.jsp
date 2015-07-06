@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*"%>
 <%@ page contentType="text/html;charset=utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>>
 <%request.setCharacterEncoding("utf-8"); %>
 <%
 String path = request.getContextPath();
@@ -11,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'success.jsp' starting page</title>
+    <title>成功页面</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -25,6 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-         棒棒哒！ <br>. 
+         棒棒哒！ <br>
+    <s:property value = "message" />
   </body>
 </html>

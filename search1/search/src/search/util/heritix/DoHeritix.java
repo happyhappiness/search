@@ -16,6 +16,8 @@ import java.util.List;
 public class DoHeritix {
 
 	private ArrayList<String> infoList;
+	private final String URL_FILE_PATH = "e:\\url.txt";
+	private final String PATH_FILE_PATH = "e:\\path.txt";
 	
 	public DoHeritix(){
 		infoList = new ArrayList<String>();
@@ -51,16 +53,16 @@ public class DoHeritix {
     }
     
     //·µ»ØurlList
-    public List<String> getUrl(String urlFileName){
+    public List<String> getUrl(){
     	
-    	readFileByLines(urlFileName);
+    	readFileByLines(URL_FILE_PATH);
     	return infoList;
     }
     
    //·µ»ØpathList
-    public List<String> getPath(String pathFileName){
+    public List<String> getPath(){
     	
-    	readFileByLines(pathFileName);
+    	readFileByLines(PATH_FILE_PATH);
     	
     	return infoList;
     }

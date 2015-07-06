@@ -20,9 +20,6 @@ public class SpiderServiceImpl implements SpiderService{
 
 	private DoParser parserHelper = new DoParser();
 	private DoHeritix heritixHelper;
-	private final String URL_FILE_PATH = "f:\\url.txt";
-	//TODO
-	private final String PATH_FILE_PATH = "f:\\path.txt";
 	
 	@Resource
 	private UrlDAO urlDAO;
@@ -36,7 +33,7 @@ public class SpiderServiceImpl implements SpiderService{
 	public List<String> getUrlList() {
 		
 		heritixHelper = new DoHeritix();
-		return heritixHelper.getUrl(URL_FILE_PATH);
+		return heritixHelper.getUrl();
 	}
 
 
@@ -45,7 +42,7 @@ public class SpiderServiceImpl implements SpiderService{
 	public List<String> getPathList() {
 		
 		heritixHelper = new DoHeritix();
-		return heritixHelper.getPath(PATH_FILE_PATH);
+		return heritixHelper.getPath();
 	}
 	
 	//借助DoParserOffLine从url和path中获取url对象并存储
@@ -68,8 +65,7 @@ public class SpiderServiceImpl implements SpiderService{
 			url.setUrl(currUrl);
 			url.setPath(currPath);
 			url.setTitle(parserHelper.getTitle(currPath));
-			url.setContent(" ");/*
-			url.setIndexed(false);*/
+			url.setContent(parserHelper.getContent(currPath));
 			//保存url 
 			urlDAO.attachDirtyUrl(url);
 		}
@@ -78,48 +74,14 @@ public class SpiderServiceImpl implements SpiderService{
 				
 	}
 	
-	//获取url表的大小
-	@Override
-	public long getUrlSize() {
-		return urlDAO.findUrlsCount();
-	}
-	
 	
 	//删除缓存表
 	@Override
 	public void clearCache() {
 		keywordDAO.deleteAll();
 	}
-
-
-/*	//借助DoParserOnLine从url获取url对象并存储
-	@Override
-	public void storeUrl(List<String> urlList) {
-		
-		//List<Url> currUrlList;
-		
-		int n;
-		n = urlList.size();
-		String currUrl;
-		for( int i = 0; i < n; i++) {
-			currUrl = urlList.get(i);
-			System.out.println(currUrl);
-
-			url.setUrl(currUrl);
-			url.setPath(null);
-			url.setTitle(parserHelper.getTitle(currUrl));
-			url.setContent(parserHelper.getContent(currUrl));
-			url.setContent(" ");
-			url.setIndexed(false);
-			//保存url 
-			urlService.saveOrUpdateUrl(url);
-		}
-		
-		System.out.println("STORE URL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-	}
-*/
-	//get and set
 	
+	//get and set
 
 	public UrlDAO getUrlDAO() {
 		return urlDAO;
@@ -149,5 +111,6 @@ public class SpiderServiceImpl implements SpiderService{
 	public void setUrl(Url url) {
 		this.url = url;
 	}
+
 
 }

@@ -45,13 +45,13 @@ import search.domain.Url;
 
 public class DoLucene {  
 	
-	private final Directory directory;
-	private final Analyzer analyzer;
-	private final IndexWriterConfig writerConfig;
-	private final IndexWriter indexWriter;
-	private final IndexReader indexReader;
-	private final IndexSearcher searcher;
-	private final MultiFieldQueryParser parser;
+	private Directory directory;
+	private Analyzer analyzer;
+	private IndexWriterConfig writerConfig;
+	private IndexWriter indexWriter;
+	private IndexReader indexReader;
+	private IndexSearcher searcher;
+	private MultiFieldQueryParser parser;
 	private List<Url> urlList;
 	private Query query;
 	private TopDocs topDocs;
@@ -60,31 +60,17 @@ public class DoLucene {
 	private final String[] FIELDNAME = new String[] {"title", "content"};
 	private final int TOPURL = 5;
 	
-	
-	public DoLucene(List<Url> urlList) throws IOException {
-		//初始化indexWriter
-		directory = SimpleFSDirectory.open(new File(indexPath));//存储在内存中
-		analyzer = new IKAnalyzer();
-		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer);
-		//每次更新索引表
-		writerConfig.setOpenMode(OpenMode.CREATE);
-		indexWriter = new IndexWriter(directory, writerConfig); 
-		this.urlList = urlList;
-		
-		//建立索引表
-		
-    	createIndex();
-    	
+	//根据关键词查询
+    public List<String> query(String request) throws IOException {
+
 		//初始化searcher和parser
+    	directory = SimpleFSDirectory.open(new File(indexPath));//存储在内存中
 		indexReader = IndexReader.open(directory);
 		searcher = new IndexSearcher(indexReader);
 		parser = new MultiFieldQueryParser(Version.LUCENE_40, FIELDNAME, analyzer);  
 		parser.setDefaultOperator(QueryParser.OR_OPERATOR); 
-	}
-	
-	//根据关键词查询
-    public List<String> query(String request) throws IOException {
-    	 List<String> urlNameList = new ArrayList<String>();
+		
+    	List<String> urlNameList = new ArrayList<String>();
     	
     	 try {  
              Query query = parser.parse(request);  
@@ -107,8 +93,17 @@ public class DoLucene {
     }
 	
 	//调用数据处理器，装载Document，建立索引表
-	private void createIndex() throws IOException {
+	public void createIndex(List<Url> urlList) throws IOException {
 		
+		//初始化indexWriter
+		directory = SimpleFSDirectory.open(new File(indexPath));//存储在内存中
+		analyzer = new IKAnalyzer();
+		writerConfig = new IndexWriterConfig(Version.LUCENE_34, analyzer);
+		//更新索引表
+		writerConfig.setOpenMode(OpenMode.CREATE);
+		indexWriter = new IndexWriter(directory, writerConfig); 
+		this.urlList = urlList;
+				
 		Document document;
 		for(Url url : urlList) {			
         	document = new Document();  

@@ -49,8 +49,8 @@ public class KeywordDAOImpl extends BaseDAOImpl<Keyword> implements KeywordDAO{
 	
 	//根据关键字内容获取关键字对象
 	@Override
-	public List getKeywordByWord(String word) {
-		return findKeywordByProperty("word", word);
+	public List<Keyword> getKeywordByWord(String word) {
+		return findByProperty("word", word);
 	}
 
 
