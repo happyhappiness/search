@@ -21,21 +21,25 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	private HistoryDAO historyDAO;
 	
+	
 	//根据用户名获取用户权限
 	@Override
-	public int getRight(String name) {
-		//权限代码： 0 普通 1管理员 -1不存在
+	public int getRight(String name, String password) {
+		//权限代码： 0 普通 1管理员 -1不存在-2密码错误
 		int rightCode = -1;
 		
 		List<User> userList = userDAO.findUserByName(name);
 		if(userList != null & userList.size() != 0){
-			if(userList.get(0).getRight())
-				rightCode = 1;
-			else
-				rightCode = 0;
-		}
-		else{
-			rightCode = -1;
+			User user = userList.get(0);
+			if(user.getPassword().equals(password)){
+				if(userList.get(0).getRight())
+					rightCode = 1;
+				else
+					rightCode = 0;
+			}
+			else{
+				rightCode = -2;
+			}
 		}
 		
 		return rightCode;
@@ -52,7 +56,7 @@ public class UserServiceImpl implements UserService {
 		List<User> userList = userDAO.findUserByName(name);
 		if(userList != null & userList.size() != 0){
 			user = userList.get(0);
-			historyList = historyDAO.findById(user.getId());
+			historyList = historyDAO.findHistoryById(user.getId());
 			for(History history : historyList){
 				wordList.add(history.getWord());
 			}
@@ -60,6 +64,23 @@ public class UserServiceImpl implements UserService {
 		
 		return wordList;
 	}
+	
+	//根据用户名和word保存用户搜索记录
+	@Override
+	public void saveHistory(String name, String word) {
+		List<User> userList = userDAO.findUserByName(name);
+		System.out.println(name);
+		System.out.println(word);
+		
+		History history = new History();
+		if(userList != null & userList.size() != 0) {
+			history.setId(userList.get(0).getId());
+			history.setWord(word);
+			historyDAO.attachDirtyHistory(history);
+		}
+		
+	}
+
 
 	//get and set
 	public UserDAO getUserDAO() {
@@ -68,6 +89,14 @@ public class UserServiceImpl implements UserService {
 
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
+	}
+
+	public HistoryDAO getHistoryDAO() {
+		return historyDAO;
+	}
+
+	public void setHistoryDAO(HistoryDAO historyDAO) {
+		this.historyDAO = historyDAO;
 	}
 
 

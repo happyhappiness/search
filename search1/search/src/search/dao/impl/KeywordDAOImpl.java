@@ -27,9 +27,12 @@ public class KeywordDAOImpl extends BaseDAOImpl<Keyword> implements KeywordDAO{
 		//根据example获取keyword对象
 		List<Keyword> keywordList = findByExample(keyword);
 		if(keywordList != null && keywordList.size() != 0) {
-			keyword.setKid(keywordList.get(0).getKid());
+			Keyword tempKeyword = keywordList.get(0);
+			attachDirty(tempKeyword);
 		}
-		attachDirty(keyword);
+		else{
+			attachDirty(keyword);
+		}
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class KeywordDAOImpl extends BaseDAOImpl<Keyword> implements KeywordDAO{
 	public List<Keyword> findKeywordByExample(Keyword keyword) {
 		
 		Query query = getSessionFactory().getCurrentSession()
-        .createQuery("from keyword where word = ? and uid = ?");
+        .createQuery("from Keyword where word = ? and uid = ?");
 		query.setString(0, keyword.getWord());
 		query.setInteger(1, keyword.getUid());		
 		return query.list();
@@ -69,7 +72,7 @@ public class KeywordDAOImpl extends BaseDAOImpl<Keyword> implements KeywordDAO{
 	@Override
 	public void deleteAll() {
 		getSessionFactory().getCurrentSession()
-		        .createQuery("delete from keyword keyword where 1 = 1")
+		        .createQuery("delete from Keyword where 1 = 1")
 		        .executeUpdate();
 	}
 

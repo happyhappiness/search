@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    
 	    <input type="submit" onClick="actionDispatcher('index')" value="更新索引列表" style="width: 169px; "/><br/><br/>
 	    
-	    <input type="submit" onClick="actionDispatcher('quit')"  value="退出系统管理" style="width: 169px; "/>
+	    <input type="submit" onClick="window.location.href='success.jsp'"  value="退出系统管理" style="width: 169px; "/>
 	
 	</form>
 </html>

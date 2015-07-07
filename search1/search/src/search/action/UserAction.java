@@ -1,5 +1,7 @@
 package search.action;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.struts2.convention.annotation.*;
@@ -18,6 +20,8 @@ public class UserAction extends ActionSupport {
 
 	private String username;
 	private String password;
+	private List<String> wordsList;
+
 	@Resource 
 	private UserService userService;
 	
@@ -25,23 +29,28 @@ public class UserAction extends ActionSupport {
 	@Action(value="login", results={
 			@Result(name="admin", location="/admin.jsp"),
 			@Result(name="user", location="/user.jsp"),
-			@Result(name="none", location="/index.jsp")
+			@Result(name="none", location="/index.jsp"),
+			@Result(name="error",location="/login.jsp")
 	})
 	public String login(){
 		
 		String result = "none";
-		//根据用户名获取用户权限0：普通用户  1：管理员 -1不存在
-		int rightCode = userService.getRight(username);
+		//根据用户名获取用户权限0：普通用户  1：管理员 -1不存在 -2密码错误
+		int rightCode = userService.getRight(username, password);
 		switch(rightCode){
 			case 1:
 				result = "admin";
 				break;
 			case 0:
 				result = "user";
+				//获取历史记录
+				wordsList = userService.getWords(username);
 				break;
 			case -1:
 				result = "none";
 				break;
+			case -2:
+				result = "error";
 		}
 		
 		return result;
@@ -72,4 +81,14 @@ public class UserAction extends ActionSupport {
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+	
+	public List<String> getWordsList() {
+		return wordsList;
+	}
+
+
+	public void setWordsList(List<String> wordsList) {
+		this.wordsList = wordsList;
+	}
+
 }

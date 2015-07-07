@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*"%>
 <%@ page contentType="text/html;charset=utf-8"%>
 <%request.setCharacterEncoding("utf-8"); %>
+<%@ taglib prefix="s" uri="/struts-tags" %>>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -25,6 +26,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    This is my JSP page. <br>
+    <p>即时搜索引擎</p>
+	<br/>
+	
+	<form method="post" action="search.action"  id="mainForm" method="post">
+	
+	    <input type="text" name="queryString" style="width: 558px; "/>
+	    
+	    <input type="submit" value="搜索" style="width: 169px; "/>   
+	        
+	</form>
+	
+	<s:iterator  value="urlList"  >
+    	<s:property value="title" /><br/>
+    	<s:property value="content" /><br/>
+    	<s:property value="url" /><br/>
+    	<s:property value="-------------------------------------" /><br/>
+    </s:iterator>
+   
+   
   </body>
 </html>

@@ -4,6 +4,8 @@ import java.util.List;
 
 
 
+
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import search.dao.UrlDAO;
@@ -23,12 +25,17 @@ public class UrlDAOImpl extends BaseDAOImpl<Url> implements UrlDAO{
 	@Override
 	public void attachDirtyUrl(Url url){
 		//根据实体查询Url表
-		List<Url> urlList = findByExample(url);
+		List<Url> urlList = findUrlByExample(url);
 		if(urlList != null && urlList.size() != 0) {
 			Url tempUrl = urlList.get(0);
-			url.setUid(tempUrl.getUid());
+			tempUrl.setPath(url.getPath());
+			tempUrl.setTitle(url.getTitle());
+			tempUrl.setContent(url.getContent());
+			attachDirty(tempUrl);
 		}
-		attachDirty(url);
+		else{
+			attachDirty(url);
+		}
 	}
 	
 	//获取全体对象信息
@@ -62,7 +69,10 @@ public class UrlDAOImpl extends BaseDAOImpl<Url> implements UrlDAO{
     //根据example获取对象
 	@Override
 	public List<Url> findUrlByExample(Url url) {
-		return findByExample(url);	
+		Query query = getSessionFactory().getCurrentSession()
+		        .createQuery("from Url where url = ?");
+				query.setString(0, url.getUrl());	
+				return query.list();
 	}
 
 }

@@ -2,10 +2,13 @@ package search.service.impl;
 
 import java.util.List;
 
+
+
 import javax.annotation.Resource;
 
 import search.dao.KeywordDAO;
 import search.dao.UrlDAO;
+import search.domain.Keyword;
 import search.domain.Url;
 
 import org.springframework.stereotype.Service;
@@ -27,7 +30,10 @@ public class SpiderServiceImpl implements SpiderService{
 	private KeywordDAO keywordDAO;
 	@Resource
 	private Url url;
+	@Resource
+	private Keyword  keyword;
 	
+
 	//heritix接口：获取urlList信息
 	@Override
 	public List<String> getUrlList() {
@@ -110,6 +116,16 @@ public class SpiderServiceImpl implements SpiderService{
 
 	public void setUrl(Url url) {
 		this.url = url;
+	}
+
+
+	public Keyword getKeyword() {
+		return keyword;
+	}
+
+
+	public void setKeyword(Keyword keyword) {
+		this.keyword = keyword;
 	}
 
 

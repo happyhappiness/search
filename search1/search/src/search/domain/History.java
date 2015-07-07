@@ -10,17 +10,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table(name = "user")
+@Table(name = "history")
 public class History implements java.io.Serializable {
 
 	// Fields
 
-	
 	@Id
 	@GeneratedValue
+	@Column(name = "hid")
+	private Integer hid;
+	
 	@Column(name = "id")
 	private Integer id;
-
 	/*
 	 *ÓÃ»§ËÑË÷´Ê
 	 */
@@ -32,14 +33,23 @@ public class History implements java.io.Serializable {
 	/** default constructor */
 	public History() {
 	}
-
+	
 	/** full constructor */
-	public History(String word) {
+	public History(int id, String word) {
+		this.id = id;
 		this.word = word;
 	}
 	
 	
 	// Property accessors
+	public Integer getHid() {
+		return hid;
+	}
+
+	public void setHid(Integer hid) {
+		this.hid = hid;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -55,4 +65,5 @@ public class History implements java.io.Serializable {
 	public void setWord(String word) {
 		this.word = word;
 	}
+
 }

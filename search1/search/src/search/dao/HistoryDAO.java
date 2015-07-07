@@ -13,8 +13,15 @@ public interface HistoryDAO {
 	List<History> findHistoryByProperty(String propertyName, Object value);
 	
 	//根据用户id获取
-	List<History> findById(int id);
+	List<History> findHistoryById(int id);
 	
 	//根据word获取
-	List<History> findByWord(String word);
+	List<History> findHistoryByWord(String word);
+
+	//根据example获取
+	List<History> findHistoryByExample(History history);
+	
+	//保存或更新历史记录
+	void attachDirtyHistory(History history);
+	
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*"%>
 <%@ page contentType="text/html;charset=utf-8"%>
 <%request.setCharacterEncoding("utf-8"); %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -12,7 +12,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>用户界面</title>
+    <title>搜索结果界面</title>
+    
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -21,12 +22,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-  </head>
-  <body>
 
-    <s:property value="username" /><br/>
-    
+  </head>
+  
+  <body>
+    <p>即时搜索引擎</p>
 	<br/>
+	<s:property value="username" />
+	
 	<form method="post" action="searchForUser.action"  id="mainForm" method="post">
 	
 	    <input type="text" name="queryString" style="width: 558px; "/>
@@ -37,10 +40,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        
 	</form>
 	
-	<s:iterator  value="wordsList"  id="words">
-    	<s:property value="words" />&nbsp;&nbsp;&nbsp;
+	<s:iterator  value="urlList"  var="url">
+    	<s:property value="title" /><br/>
+    	<s:property value="content" /><br/>
+    	<s:property value="url" /><br/>
+    	<s:property value="-------------------------------------------------------------" /><br/>
     </s:iterator>
    
-
-</body>
+   
+  </body>
 </html>

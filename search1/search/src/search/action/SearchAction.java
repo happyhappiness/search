@@ -11,12 +11,10 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import search.domain.Keyword;
 import search.domain.Url;
 import search.service.SearchService;
 import search.service.SpiderService;
-import search.service.impl.SearchServiceImpl;
-import search.service.impl.SpiderServiceImpl;
+import search.service.UserService;
 
 @Controller
 @Namespace("/")
@@ -29,17 +27,25 @@ public class SearchAction extends ActionSupport{
 	 private SearchService searchService;
 	 @Resource
 	 private SpiderService spiderService;
+	 @Resource
+	 private UserService userService;
 	 private String queryString;
+	 private String username;
+	 private List<Url> urlList;
 	
 
+
 	@Action(value = "search", results = {  
-		 @Result(name = "success", location = "/success.jsp")})
+		 @Result(name = "success", location = "/result.jsp")})
 	 public String search() {
 		 if(queryString != null){
-			 System.out.println(queryString);
 		
 			//搜索
-		    searchService.searchKeyword(queryString);
+			urlList = searchService.searchKeyword(queryString);
+			//调整显示内容
+			for(Url url : urlList) {
+				url.setContent(url.getContent().substring(0,1000));
+			}
 		    return SUCCESS;
 		    
 		 }		 
@@ -47,6 +53,27 @@ public class SearchAction extends ActionSupport{
 		 	 
 	 }
 
+	@Action(value = "searchForUser", results = {  
+		 @Result(name = "success", location = "/resultForUser.jsp")})
+	 public String searchForUser() {
+		 if(queryString != null){
+		
+			//搜索
+			urlList = searchService.searchKeyword(queryString);
+			//跳转显示content前1000字
+			for(Url url : urlList) {
+				url.setContent(url.getContent().substring(0,1000));
+			}
+			 
+		    //保存用户历史信息
+		    userService.saveHistory(username, queryString);
+		    
+		    return SUCCESS;
+		    
+		 }		 
+		 return ERROR;
+		 	 
+	 }
 
 	//getter and setter
 
@@ -77,5 +104,31 @@ public class SearchAction extends ActionSupport{
 	public void setSpiderService(SpiderService spiderService) {
 		this.spiderService = spiderService;
 	}
+	
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public List<Url> getUrlList() {
+		return urlList;
+	}
+
+	public void setUrlList(List<Url> urlList) {
+		this.urlList = urlList;
+	}
+
+	
 }
